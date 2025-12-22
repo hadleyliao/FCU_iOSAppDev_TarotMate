@@ -1,0 +1,15 @@
+# 🃏 塔羅牌抽卡記錄應用程式 (TarotMate)
+
+## 📱 畫面截圖
+![APP畫面](screenshot/1.png)
+![過場畫面](screenshot/2.png)
+![主畫面](screenshot/3.png)
+![主畫面](screenshot/4.png)
+![主畫面](screenshot/5.png)
+![提醒設定](screenshot/6.png)
+![黑夜模式-主畫面](screenshot/7.png)
+![黑夜模式-主畫面](screenshot/8.png)
+![黑夜模式-主畫面](screenshot/9.png)
+![黑夜模式-主畫面](screenshot/10.png)
+![黑夜模式-主畫面](screenshot/11.png)
+![黑夜模式-提醒設定](screenshot/12.png)
