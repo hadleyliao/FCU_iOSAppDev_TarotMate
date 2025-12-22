@@ -89,5 +89,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
-        .modelContainer(for: TarotCardData.self, JournalEntryData.self, inMemory: true)
+        .modelContainer(for: [TarotCardData.self, JournalEntryData.self], inMemory: true)
 }
