@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神秘塔羅 - iOS App 原型</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://rsms.me/inter/inter.css');
+        html { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }
+        body {
+            background-color: #0F172A; /* slate-900 */
+            font-family: 'Inter', "Noto Sans TC", sans-serif;
+        }
+        .iphone-pro-frame {
+            width: 430px;
+            height: 932px;
+            background-color: #020617; /* slate-950 */
+            border-radius: 60px;
+            box-shadow: 0 0 0 10px #1E293B, 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 18px;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .iphone-pro-screen {
+            background-color: #020617; /* slate-950 */
+            color: #E2E8F0; /* slate-200 */
+            border-radius: 42px;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .dynamic-island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 35px;
+            background-color: #000;
+            border-radius: 20px;
+            z-index: 100;
+        }
+        .screen-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        .screen-content::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, and Opera */
+        }
+        h1, h2, h3 {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "Helvetica", "Arial", "Noto Sans TC", sans-serif;
+            font-weight: 700;
+        }
+        .apple-title-1 { font-size: 2.125rem; line-height: 2.5rem; }
+        .apple-title-2 { font-size: 1.75rem; line-height: 2.25rem; }
+        .apple-headline { font-size: 1.0625rem; line-height: 1.5rem; font-weight: 600; }
+        .apple-body { font-size: 1.0625rem; line-height: 1.5rem; }
+        .apple-subhead { font-size: 0.9375rem; line-height: 1.25rem; }
+        .apple-caption { font-size: 0.75rem; line-height: 1rem; color: #94A3B8; /* slate-400 */ }
+
+        .tarot-card {
+            background: linear-gradient(145deg, #334155, #1E293B);
+            border: 1px solid #475569;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -2px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            aspect-ratio: 5 / 9;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .tarot-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 2px;
+            background: linear-gradient(45deg, #A855F7, #F59E0B, #A855F7);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+        .tarot-card:hover::before {
+            opacity: 0.8;
+        }
+        /* iOS Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 51px;
+            height: 31px;
+        }
+        .toggle-switch-background {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #374151; /* gray-700 */
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .toggle-switch-handle {
+            position: absolute;
+            height: 27px;
+            width: 27px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        .toggle-on .toggle-switch-background {
+            background-color: #8B5CF6; /* purple-500 */
+        }
+        .toggle-on .toggle-switch-handle {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 flex flex-col items-center justify-center p-8 md:p-12">
+
+    <div class="mb-12 text-center text-white">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-100">神秘塔羅 - iOS App 原型</h1>
+        <p class="mt-4 text-lg text-slate-400">提供給開發人員的螢幕總覽。</p>
+    </div>
+
+    <!-- Main Container for all screens -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16">
+
+        <!-- ======================================================= -->
+        <!-- 1. Home Screen                                          -->
+        <!-- ======================================================= -->
+        <section id="home-screen">
+            <div class="flex flex-col items-center space-y-2 mb-4">
+                <h2 class="text-white text-lg font-semibold">1. 首頁</h2>
+                <p class="text-slate-400 text-sm">應用程式的每日占卜入口。</p>
+            </div>
+            <div class="iphone-pro-frame">
+                <div class="iphone-pro-screen">
+                    <div class="dynamic-island"></div>
+                    <!-- Screen Content -->
+                    <main class="screen-content flex flex-col justify-between p-6">
+                        <!-- Header -->
+                        <div class="text-center mt-12">
+                            <svg class="mx-auto h-20 w-20 text-purple-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C12.4142 2.75 12.75 3.08579 12.75 3.5V5.06289C14.1539 5.23418 15.4746 5.82613 16.5858 6.93934C18.8284 9.18198 18.8284 12.818 16.5858 15.0607C14.3431 17.3033 10.7067 17.3033 8.4641 15.0607C7.35092 13.9475 6.75839 12.6264 6.93934 11.2222L11.2222 6.93934L6.93934 11.2222C5.82613 10.111 5.23418 8.79033 5.06289 7.38641H3.5C3.08579 7.38641 2.75 7.05062 2.75 6.63641C2.75 6.22219 3.08579 5.88641 3.5 5.88641H5.06289C5.59013 3.82455 7.17545 2.23924 9.23729 1.712V3.5C9.23729 3.91421 9.57308 4.25 9.98729 4.25C10.4015 4.25 10.7373 3.91421 10.7373 3.5V1.712C11.1528 1.63659 11.5721 1.58988 12 1.58988C14.2523 1.58988 16.3317 2.45781 17.8488 3.97491C19.3659 5.49201 20.2338 7.57143 20.2338 9.82373C20.2338 12.076 19.3659 14.1554 17.8488 15.6725C15.9967 17.5246 13.5702 18.5212 11.0598 18.497L18.497 11.0598L11.0598 18.497C8.54936 18.5212 6.1229 17.5246 4.27079 15.6725C2.41868 13.8204 1.4221 11.3939 1.4453 8.88352L8.88352 1.4453L1.4453 8.88352C1.4221 6.37311 2.41868 3.94665 4.27079 2.09454C6.1229 0.242434 8.54936 -0.754089 11.0598 -0.77729L11.75 -0.779778L12 -0.779893L12.25 -0.779778L12.9402 -077729C15.4506 -0.754089 17.8771 0.242434 19.7292 2.09454C21.5813 3.94665 22.5779 6.37311 22.5547 8.88352L15.1165 16.3218L22.5547 8.88352C22.5779 11.3939 21.5813 13.8204 19.7292 15.6725C17.8771 17.5246 15.4506 18.5212 12.9402 18.497L12.25 18.4947L12 18.4946L11.75 18.4947L11.0598 18.497C9.85191 18.5085 8.66539 18.2831 7.58579 17.8488L7.06066 17.3237C6.67014 16.9332 6.03702 16.9332 5.64649 17.3237C5.25597 17.7142 5.25597 18.3474 5.64649 18.7379C7.05257 20.144 8.83789 21.1364 10.8237 21.7373V20.5C10.8237 20.0858 11.1595 19.75 11.5737 19.75C11.9879 19.75 12.3237 20.0858 12.3237 20.5V21.8636C13.7276 21.6826 15.0483 21.0907 16.1615 20.1775L16.5858 19.7523C16.9763 19.3618 17.6095 19.3618 18 19.7523C18.3905 20.1428 18.3905 20.7759 18 21.1665C16.6853 22.4811 14.9084 23.3636 13 23.6644V22.5C13 22.0858 12.6642 21.75 12.25 21.75C11.8358 21.75 11.5 22.0858 11.5 22.5V23.9371C10.1035 23.7658 8.78918 23.1739 7.67627 22.2607L7.06066 21.6451C6.67014 21.2546 6.03702 21.2546 5.64649 21.6451C5.25597 22.0356 5.25597 22.6688 5.64649 23.0593C7.23405 24.6469 9.53613 25.4654 12 25.4654C14.4639 25.4654 16.7659 24.6469 18.3535 23.0593C19.9411 21.4717 20.7596 19.1696 20.7596 16.7058C20.7596 14.2419 19.9411 11.94 18.3535 10.3524C16.7659 8.76484 14.4639 7.94634 12 7.94634C11.5858 7.94634 11.25 7.61055 11.25 7.19634C11.25 6.78213 11.5858 6.44634 12 6.44634C14.8693 6.44634 17.6019 7.5859 19.6476 9.6316C21.6933 11.6773 22.8328 14.4099 22.8328 17.2792C22.8328 20.1485 21.6933 22.8811 19.6476 24.9268C17.6019 26.9725 14.8693 28.1121 12 28.1121C9.13069 28.1121 6.39811 26.9725 4.35241 24.9268C2.30671 22.8811 1.16715 20.1485 1.16715 17.2792C1.16715 14.4099 2.30671 11.6773 4.35241 9.6316C6.39811 7.5859 9.13069 6.44634 12 6.44634C12.4142 6.44634 12.75 6.11055 12.75 5.69634V3.5C12.75 3.08579 12.4142 2.75 12 2.75Z" fill="currentColor"/></svg>
+                            <h1 class="apple-title-1 mt-2 text-slate-100">神秘面紗</h1>
+                            <p class="apple-body text-slate-400 mt-2">讓牌卡引導您的一天。</p>
+                        </div>
+                        <div class="w-full flex flex-col items-center space-y-4 pb-4">
+                            <button class="w-full bg-purple-600 hover:bg-purple-500 text-white apple-headline rounded-full py-4 transition-colors duration-300">抽取每日牌卡</button>
+                            <button class="w-full bg-slate-700/50 hover:bg-slate-700 text-slate-200 apple-headline rounded-full py-4 transition-colors duration-300">選擇牌陣</button>
+                        </div>
+                    </main>
+                    <nav class="bg-black/30 backdrop-blur-md border-t border-slate-700/50">
+                        <div class="flex justify-around items-center h-[84px] pb-6">
+                            <div class="text-center text-purple-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0L2.41 11.47a.75.75 0 101.06 1.06l8-8z" /><path d="M12 5.432l8.159 8.159c.026.026.05.054.07.084v6.101A2.25 2.25 0 0117.75 22h-3.5a.75.75 0 01-.75-.75V15a.75.75 0 00-.75-.75h-2.5a.75.75 0 00-.75.75v6.25a.75.75 0 01-.75.75h-3.5A2.25 2.25 0 012.25 19.75v-6.101a12.08 12.08 0 01.07-.084L12 5.43z" /></svg>
+                                <span class="apple-caption mt-1">首頁</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 000-1.214.75.75 0 00-.67-.211 8.25 8.25 0 01-4.08.966 8.235 8.235 0 01-1.75-.221V4.773c.532-.163 1.12-.248 1.75-.248a8.25 8.25 0 014.08.966.75.75 0 00.67-.211.75.75 0 000-1.214z" /><path d="M12.75 4.533A9.707 9.707 0 0118 3a9.735 9.735 0 013.25.555.75.75 0 01.5.707v14.25a.75.75 0 01-1 .707A9.735 9.735 0 0118 21a9.707 9.707 0 01-5.25-1.533.75.75 0 010-1.214.75.75 0 01.67-.211 8.25 8.25 0 004.08.966 8.235 8.235 0 001.75-.221V4.773a8.235 8.235 0 00-1.75-.248 8.25 8.25 0 00-4.08.966.75.75 0 01-.67-.211.75.75 0 010-1.214z" /></svg>
+                                <span class="apple-caption mt-1">牌卡</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v1.5c0 1.036.84 1.875 1.875 1.875h.375a3 3 0 013 3v1.5H6a.75.75 0 000 1.5h12a.75.75 0 000-1.5h-5.25v-1.5a3 3 0 013-3h.375C17.16 6.75 18 5.91 18 4.875v-1.5C18 2.34 17.161 1.5 16.125 1.5H7.875zM6 15a.75.75 0 000 1.5h12a.75.75 0 000-1.5H6z" clip-rule="evenodd" /><path d="M3 10.875C3 9.84 3.84 9 4.875 9H19.125c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875H4.875A1.875 1.875 0 013 19.125v-8.25z" /></svg>
+                                <span class="apple-caption mt-1">日誌</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.946 1.55l-.261 1.043a2.25 2.25 0 01-1.23 1.23l-1.043.261c-.887.247-1.55.989-1.55 1.946l0 .261a2.25 2.25 0 011.55 1.946l1.043.261a2.25 2.25 0 011.23 1.23l.261 1.043c.247.887.989 1.55 1.946 1.55l.261 0c.957 0 1.699-.663 1.946-1.55l.261-1.043a2.25 2.25 0 011.23-1.23l1.043-.261c.887-.247 1.55-.989 1.55-1.946l0-.261c0-.957-.663-1.699-1.55-1.946l-1.043-.261a2.25 2.25 0 01-1.23-1.23l-.261-1.043C12.777 2.913 12.035 2.25 11.078 2.25zM12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" clip-rule="evenodd" /><path d="M12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.882 6.168a.75.75 0 01.323 1.022l-3.535 6.06a.75.75 0 01-1.345-.785l3.535-6.06a.75.75 0 011.022-.237zm-13.764 0a.75.75 0 011.022.237l3.535 6.06a.75.75 0 01-1.345.785l-3.535-6.06a.75.75 0 01.323-1.022z" /></svg>
+                                <span class="apple-caption mt-1">設定</span>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ======================================================= -->
+        <!-- 2. Spread Selection Screen                              -->
+        <!-- ======================================================= -->
+        <section id="spread-selection-screen">
+             <div class="flex flex-col items-center space-y-2 mb-4">
+                <h2 class="text-white text-lg font-semibold">2. 牌陣選擇</h2>
+                <p class="text-slate-400 text-sm">使用者選擇占卜類型。</p>
+            </div>
+            <div class="iphone-pro-frame">
+                <div class="iphone-pro-screen">
+                    <div class="dynamic-island"></div>
+                    <!-- Header -->
+                    <header class="p-4 flex items-center justify-center relative border-b border-slate-800">
+                        <button class="absolute left-4 text-purple-400 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" /></svg>
+                            <span class="ml-1 apple-body">首頁</span>
+                        </button>
+                        <h2 class="apple-headline">新的占卜</h2>
+                    </header>
+                    <main class="screen-content p-6 space-y-6">
+                        <h1 class="apple-title-2 text-slate-100">選擇牌陣</h1>
+                        <div class="bg-slate-800/50 rounded-2xl p-5 flex items-center space-x-5 border border-slate-700 hover:border-purple-500 transition-colors cursor-pointer">
+                            <div class="w-20 h-20 bg-slate-700 rounded-lg flex items-center justify-center">
+                                <svg class="h-10 w-10 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.553L16.5 21.75l-.398-1.197a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.197-.398a2.25 2.25 0 001.423-1.423L16.5 15.75l.398 1.197a2.25 2.25 0 001.423 1.423L19.5 18.75l-1.197.398a2.25 2.25 0 00-1.423 1.423z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="apple-headline text-slate-100">單張牌卡</h3>
+                                <p class="apple-subhead text-slate-400 mt-1">快速洞察與每日焦點。</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-2xl p-5 flex items-center space-x-5 border border-slate-700 hover:border-purple-500 transition-colors cursor-pointer">
+                            <div class="w-20 h-20 bg-slate-700 rounded-lg flex items-center justify-center">
+                                <svg class="h-10 w-10 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h-1.5m1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1.5-1.5m1.5 1.5l1.5-1.5m3.75-3.75l-1.5-1.5m1.5 1.5l1.5-1.5m-7.5 0v-1.5m0 1.5v1.5m7.5-3v-1.5m0 1.5v1.5" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="apple-headline text-slate-100">三牌陣</h3>
+                                <p class="apple-subhead text-slate-400 mt-1">探索過去、現在與未來。</p>
+                            </div>
+                        </div>
+                    </main>
+                     <nav class="bg-black/30 backdrop-blur-md border-t border-slate-700/50">
+                        <div class="flex justify-around items-center h-[84px] pb-6">
+                            <div class="text-center text-purple-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0L2.41 11.47a.75.75 0 101.06 1.06l8-8z" /><path d="M12 5.432l8.159 8.159c.026.026.05.054.07.084v6.101A2.25 2.25 0 0117.75 22h-3.5a.75.75 0 01-.75-.75V15a.75.75 0 00-.75-.75h-2.5a.75.75 0 00-.75.75v6.25a.75.75 0 01-.75.75h-3.5A2.25 2.25 0 012.25 19.75v-6.101a12.08 12.08 0 01.07-.084L12 5.43z" /></svg>
+                                <span class="apple-caption mt-1">首頁</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 000-1.214.75.75 0 00-.67-.211 8.25 8.25 0 01-4.08.966 8.235 8.235 0 01-1.75-.221V4.773c.532-.163 1.12-.248 1.75-.248a8.25 8.25 0 014.08.966.75.75 0 00.67-.211.75.75 0 000-1.214z" /><path d="M12.75 4.533A9.707 9.707 0 0118 3a9.735 9.735 0 013.25.555.75.75 0 01.5.707v14.25a.75.75 0 01-1 .707A9.735 9.735 0 0118 21a9.707 9.707 0 01-5.25-1.533.75.75 0 010-1.214.75.75 0 01.67-.211 8.25 8.25 0 004.08.966 8.235 8.235 0 001.75-.221V4.773a8.235 8.235 0 00-1.75-.248 8.25 8.25 0 00-4.08.966.75.75 0 01-.67-.211.75.75 0 010-1.214z" /></svg>
+                                <span class="apple-caption mt-1">牌卡</span>
+                            </div>
+                             <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v1.5c0 1.036.84 1.875 1.875 1.875h.375a3 3 0 013 3v1.5H6a.75.75 0 000 1.5h12a.75.75 0 000-1.5h-5.25v-1.5a3 3 0 013-3h.375C17.16 6.75 18 5.91 18 4.875v-1.5C18 2.34 17.161 1.5 16.125 1.5H7.875zM6 15a.75.75 0 000 1.5h12a.75.75 0 000-1.5H6z" clip-rule="evenodd" /><path d="M3 10.875C3 9.84 3.84 9 4.875 9H19.125c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875H4.875A1.875 1.875 0 013 19.125v-8.25z" /></svg>
+                                <span class="apple-caption mt-1">日誌</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.946 1.55l-.261 1.043a2.25 2.25 0 01-1.23 1.23l-1.043.261c-.887.247-1.55.989-1.55 1.946l0 .261a2.25 2.25 0 011.55 1.946l1.043.261a2.25 2.25 0 011.23 1.23l.261 1.043c.247.887.989 1.55 1.946 1.55l.261 0c.957 0 1.699-.663 1.946-1.55l.261-1.043a2.25 2.25 0 011.23-1.23l1.043-.261c.887-.247 1.55-.989 1.55-1.946l0-.261c0-.957-.663-1.699-1.55-1.946l-1.043-.261a2.25 2.25 0 01-1.23-1.23l-.261-1.043C12.777 2.913 12.035 2.25 11.078 2.25zM12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" clip-rule="evenodd" /><path d="M12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.882 6.168a.75.75 0 01.323 1.022l-3.535 6.06a.75.75 0 01-1.345-.785l3.535-6.06a.75.75 0 011.022-.237zm-13.764 0a.75.75 0 011.022.237l3.535 6.06a.75.75 0 01-1.345.785l-3.535-6.06a.75.75 0 01.323-1.022z" /></svg>
+                                <span class="apple-caption mt-1">設定</span>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 3a. Reading Result Screen (Before Save)                 -->
+        <!-- ======================================================= -->
+        <section id="reading-result-screen">
+             <div class="flex flex-col items-center space-y-2 mb-4">
+                <h2 class="text-white text-lg font-semibold">3a. 占卜結果 (儲存前)</h2>
+                <p class="text-slate-400 text-sm">顯示可儲存的結果。</p>
+            </div>
+            <div class="iphone-pro-frame">
+                <div class="iphone-pro-screen">
+                    <div class="dynamic-island"></div>
+                    <header class="p-4 flex items-center justify-between relative border-b border-slate-800">
+                        <button class="text-purple-400 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" /></svg><span class="ml-1 apple-body">牌陣</span></button>
+                        <h2 class="apple-headline absolute left-1/2 -translate-x-1/2">您的占卜</h2>
+                        <button class="text-purple-400 apple-body">完成</button>
+                    </header>
+                    <main class="screen-content p-6 flex flex-col justify-between">
+                        <div class="space-y-10">
+                            <div class="flex justify-center items-start space-x-3">
+                                <div class="w-1/3 text-center">
+                                    <p class="apple-subhead text-slate-400 mb-2">過去</p>
+                                    <div class="tarot-card cursor-pointer"><div class="text-amber-400 h-16 w-16"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5a.75.75 0 01.75.75V7.5h-1.5V2.25A.75.75 0 0112 1.5zM19.06 4.94a.75.75 0 010 1.06L14.81 10.25H9.19L4.94 6a.75.75 0 011.06-1.06L10.25 9.19V3.56a.75.75 0 011.5 0v5.63l4.25-4.25a.75.75 0 011.06 0zM3.75 12a.75.75 0 01.75-.75h15a.75.75 0 010 1.5h-15a.75.75 0 01-.75-.75zM12 22.5a.75.75 0 01-.75-.75v-5.63l-4.25 4.25a.75.75 0 01-1.06-1.06L10.19 15H13.8l4.25 4.25a.75.75 0 11-1.06 1.06L12.75 16.06v5.69a.75.75 0 01-.75.75z" /></svg></div></div>
+                                    <p class="apple-caption mt-2 truncate">命運之輪</p>
+                                </div>
+                                <div class="w-1/3 text-center -translate-y-4">
+                                    <p class="apple-subhead text-slate-300 font-semibold mb-2">現在</p>
+                                    <div class="tarot-card cursor-pointer transform scale-110 border-purple-400"><div class="text-purple-300 h-16 w-16"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" /></svg></div></div>
+                                    <p class="apple-caption mt-2 truncate">隱者</p>
+                                </div>
+                                <div class="w-1/3 text-center">
+                                    <p class="apple-subhead text-slate-400 mb-2">未來</p>
+                                    <div class="tarot-card cursor-pointer"><div class="text-sky-300 h-16 w-16"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 000-1.214.75.75 0 00-.67-.211 8.25 8.25 0 01-4.08.966 8.235 8.235 0 01-1.75-.221V4.773c.532-.163 1.12-.248 1.75-.248a8.25 8.25 0 014.08.966.75.75 0 00.67-.211.75.75 0 000-1.214z" /></svg></div></div>
+                                    <p class="apple-caption mt-2 truncate">星星</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <h3 class="apple-title-2 text-slate-100">解讀</h3>
+                                <p class="apple-body text-slate-300">您的過去由變化的循環定義 (<span class="text-amber-400 font-semibold">命運之輪</span>)。您目前正處於內省和靈魂探索的時期 (<span class="text-purple-300 font-semibold">隱者</span>)。前方是一條充滿希望、靈感和重新獲得信念的道路 (<span class="text-sky-300 font-semibold">星星</span>)。</p>
+                                <p class="apple-body text-slate-400">擁抱當前的獨處，為更光明的未來做準備。宇宙正在引導您走向寧靜和目的。點擊牌卡了解更多。</p>
+                            </div>
+                        </div>
+                        <div class="w-full pb-4">
+                             <button class="w-full bg-purple-600 hover:bg-purple-500 text-white apple-headline rounded-full py-4 transition-colors duration-300 flex items-center justify-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
+                                <span>儲存至日誌</span>
+                            </button>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ======================================================= -->
+        <!-- 3b. Reading Result Screen (After Save)                  -->
+        <!-- ======================================================= -->
+        <section id="reading-result-saved-screen">
+             <div class="flex flex-col items-center space-y-2 mb-4">
+                <h2 class="text-white text-lg font-semibold">3b. 占卜結果 (儲存後)</h2>
+                <p class="text-slate-400 text-sm">顯示儲存後的確認狀態。</p>
+            </div>
+            <div class="iphone-pro-frame">
+                <div class="iphone-pro-screen">
+                    <div class="dynamic-island"></div>
+                    <header class="p-4 flex items-center justify-between relative border-b border-slate-800">
+                        <button class="text-purple-400 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" /></svg><span class="ml-1 apple-body">牌陣</span></button>
+                        <h2 class="apple-headline absolute left-1/2 -translate-x-1/2">您的占卜</h2>
+                        <button class="text-purple-400 apple-body">完成</button>
+                    </header>
+                    <main class="screen-content p-6 flex flex-col justify-between">
+                        <div class="space-y-10">
+                            <div class="flex justify-center items-start space-x-3">
+                                <div class="w-1/3 text-center">
+                                    <p class="apple-subhead text-slate-400 mb-2">過去</p>
+                                    <div class="tarot-card cursor-pointer"><div class="text-amber-400 h-16 w-16"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5a.75.75 0 01.75.75V7.5h-1.5V2.25A.75.75 0 0112 1.5zM19.06 4.94a.75.75 0 010 1.06L14.81 10.25H9.19L4.94 6a.75.75 0 011.06-1.06L10.25 9.19V3.56a.75.75 0 011.5 0v5.63l4.25-4.25a.75.75 0 011.06 0zM3.75 12a.75.75 0 01.75-.75h15a.75.75 0 010 1.5h-15a.75.75 0 01-.75-.75zM12 22.5a.75.75 0 01-.75-.75v-5.63l-4.25 4.25a.75.75 0 01-1.06-1.06L10.19 15H13.8l4.25 4.25a.75.75 0 11-1.06 1.06L12.75 16.06v5.69a.75.75 0 01-.75.75z" /></svg></div></div>
+                                    <p class="apple-caption mt-2 truncate">命運之輪</p>
+                                </div>
+                                <div class="w-1/3 text-center -translate-y-4">
+                                    <p class="apple-subhead text-slate-300 font-semibold mb-2">現在</p>
+                                    <div class="tarot-card cursor-pointer transform scale-110 border-purple-400"><div class="text-purple-300 h-16 w-16"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" /></svg></div></div>
+                                    <p class="apple-caption mt-2 truncate">隱者</p>
+                                </div>
+                                <div class="w-1/3 text-center">
+                                    <p class="apple-subhead text-slate-400 mb-2">未來</p>
+                                    <div class="tarot-card cursor-pointer"><div class="text-sky-300 h-16 w-16"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 000-1.214.75.75 0 00-.67-.211 8.25 8.25 0 01-4.08.966 8.235 8.235 0 01-1.75-.221V4.773c.532-.163 1.12-.248 1.75-.248a8.25 8.25 0 014.08.966.75.75 0 00.67-.211.75.75 0 000-1.214z" /></svg></div></div>
+                                    <p class="apple-caption mt-2 truncate">星星</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <h3 class="apple-title-2 text-slate-100">解讀</h3>
+                                <p class="apple-body text-slate-300">您的過去由變化的循環定義 (<span class="text-amber-400 font-semibold">命運之輪</span>)。您目前正處於內省和靈魂探索的時期 (<span class="text-purple-300 font-semibold">隱者</span>)。前方是一條充滿希望、靈感和重新獲得信念的道路 (<span class="text-sky-300 font-semibold">星星</span>)。</p>
+                                <p class="apple-body text-slate-400">擁抱當前的獨處，為更光明的未來做準備。宇宙正在引導您走向寧靜和目的。點擊牌卡了解更多。</p>
+                            </div>
+                        </div>
+                        <div class="w-full pb-4">
+                             <button class="w-full bg-slate-600 text-slate-400 apple-headline rounded-full py-4 flex items-center justify-center space-x-2 cursor-not-allowed opacity-70">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
+                                <span>已於 20:55 儲存</span>
+                            </button>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 4. Card Library                                         -->
+        <!-- ======================================================= -->
+        <section id="library-screen">
+             <div class="flex flex-col items-center space-y-2 mb-4">
+                <h2 class="text-white text-lg font-semibold">4. 牌卡圖書館</h2>
+                <p class="text-slate-400 text-sm">瀏覽和搜尋所有牌卡。</p>
+            </div>
+            <div class="iphone-pro-frame">
+                <div class="iphone-pro-screen">
+                    <div class="dynamic-island"></div>
+                    <main class="screen-content flex flex-col pt-12">
+                        <div class="p-4 sticky top-0 bg-slate-950/80 backdrop-blur-md z-10 border-b border-slate-800">
+                           <h1 class="apple-title-1 text-center">牌卡圖書館</h1>
+                           <div class="relative mt-4">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-slate-500"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" /></svg>
+                                </div>
+                                <input type="search" placeholder="搜尋牌卡..." class="block w-full rounded-md border-0 bg-slate-800 py-2.5 pl-10 pr-3 text-slate-200 ring-1 ring-inset ring-slate-700 placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-purple-500 sm:text-sm sm:leading-6">
+                           </div>
+                        </div>
+                        <div class="p-4 grid grid-cols-3 gap-4">
+                            <div class="text-center cursor-pointer"><div class="tarot-card"></div><p class="apple-caption mt-2">愚者</p></div>
+                            <div class="text-center cursor-pointer"><div class="tarot-card"></div><p class="apple-caption mt-2">魔術師</p></div>
+                            <div class="text-center cursor-pointer"><div class="tarot-card"></div><p class="apple-caption mt-2">女祭司</p></div>
+                            <div class="text-center cursor-pointer"><div class="tarot-card"></div><p class="apple-caption mt-2">皇后</p></div>
+                            <div class="text-center cursor-pointer"><div class="tarot-card"></div><p class="apple-caption mt-2">皇帝</p></div>
+                            <div class="text-center cursor-pointer"><div class="tarot-card"></div><p class="apple-caption mt-2">教皇</p></div>
+                             <div class="text-center cursor-pointer"><div class="tarot-card"></div><p class="apple-caption mt-2">戀人</p></div>
+                            <div class="text-center cursor-pointer"><div class="tarot-card"></div><p class="apple-caption mt-2">戰車</p></div>
+                            <div class="text-center cursor-pointer"><div class="tarot-card"></div><p class="apple-caption mt-2">力量</p></div>
+                        </div>
+                    </main>
+                    <nav class="bg-black/30 backdrop-blur-md border-t border-slate-700/50">
+                        <div class="flex justify-around items-center h-[84px] pb-6">
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0L2.41 11.47a.75.75 0 101.06 1.06l8-8z" /></svg>
+                                <span class="apple-caption mt-1">首頁</span>
+                            </div>
+                            <div class="text-center text-purple-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 000-1.214.75.75 0 00-.67-.211 8.25 8.25 0 01-4.08.966 8.235 8.235 0 01-1.75-.221V4.773c.532-.163 1.12-.248 1.75-.248a8.25 8.25 0 014.08.966.75.75 0 00.67-.211.75.75 0 000-1.214z" /><path d="M12.75 4.533A9.707 9.707 0 0118 3a9.735 9.735 0 013.25.555.75.75 0 01.5.707v14.25a.75.75 0 01-1 .707A9.735 9.735 0 0118 21a9.707 9.707 0 01-5.25-1.533.75.75 0 010-1.214.75.75 0 01.67-.211 8.25 8.25 0 004.08.966 8.235 8.235 0 001.75-.221V4.773a8.235 8.235 0 00-1.75-.248 8.25 8.25 0 00-4.08.966.75.75 0 01-.67-.211.75.75 0 010-1.214z" /></svg>
+                                <span class="apple-caption mt-1">牌卡</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v1.5c0 1.036.84 1.875 1.875 1.875h.375a3 3 0 013 3v1.5H6a.75.75 0 000 1.5h12a.75.75 0 000-1.5h-5.25v-1.5a3 3 0 013-3h.375C17.16 6.75 18 5.91 18 4.875v-1.5C18 2.34 17.161 1.5 16.125 1.5H7.875zM6 15a.75.75 0 000 1.5h12a.75.75 0 000-1.5H6z" clip-rule="evenodd" /><path d="M3 10.875C3 9.84 3.84 9 4.875 9H19.125c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875H4.875A1.875 1.875 0 013 19.125v-8.25z" /></svg>
+                                <span class="apple-caption mt-1">日誌</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.946 1.55l-.261 1.043a2.25 2.25 0 01-1.23 1.23l-1.043.261c-.887.247-1.55.989-1.55 1.946l0 .261a2.25 2.25 0 011.55 1.946l1.043.261a2.25 2.25 0 011.23 1.23l.261 1.043c.247.887.989 1.55 1.946 1.55l.261 0c.957 0 1.699-.663 1.946-1.55l.261-1.043a2.25 2.25 0 011.23-1.23l1.043-.261c.887-.247 1.55-.989 1.55-1.946l0-.261c0-.957-.663-1.699-1.55-1.946l-1.043-.261a2.25 2.25 0 01-1.23-1.23l-.261-1.043C12.777 2.913 12.035 2.25 11.078 2.25zM12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" clip-rule="evenodd" /><path d="M12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.882 6.168a.75.75 0 01.323 1.022l-3.535 6.06a.75.75 0 01-1.345-.785l3.535-6.06a.75.75 0 011.022-.237zm-13.764 0a.75.75 0 011.022.237l3.535 6.06a.75.75 0 01-1.345.785l-3.535-6.06a.75.75 0 01.323-1.022z" /></svg>
+                                <span class="apple-caption mt-1">設定</span>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 5. Journal Screen                                       -->
+        <!-- ======================================================= -->
+        <section id="journal-screen">
+             <div class="flex flex-col items-center space-y-2 mb-4">
+                <h2 class="text-white text-lg font-semibold">5. 占卜日誌</h2>
+                <p class="text-slate-400 text-sm">檢視過去的占卜紀錄。</p>
+            </div>
+            <div class="iphone-pro-frame">
+                <div class="iphone-pro-screen">
+                    <div class="dynamic-island"></div>
+                    <main class="screen-content flex flex-col pt-12">
+                        <div class="p-4 sticky top-0 bg-slate-950/80 backdrop-blur-md z-10 border-b border-slate-800">
+                           <h1 class="apple-title-1 text-center">占卜日誌</h1>
+                        </div>
+                        <div class="flex-grow p-6 space-y-4">
+                            <div class="bg-slate-800/50 rounded-2xl p-5 border border-slate-700 space-y-2">
+                                <p class="apple-subhead text-slate-400">2025年12月22日 晚上8:55</p>
+                                <h3 class="apple-headline text-slate-100">三牌陣</h3>
+                                <p class="apple-body text-slate-300"><span class="text-amber-400">過去:</span> 命運之輪, <span class="text-purple-300">現在:</span> 隱者, <span class="text-sky-300">未來:</span> 星星</p>
+                            </div>
+                            <div class="bg-slate-800/50 rounded-2xl p-5 border border-slate-700 space-y-2">
+                                <p class="apple-subhead text-slate-400">2025年12月21日 早上9:12</p>
+                                <h3 class="apple-headline text-slate-100">每日牌卡</h3>
+                                <p class="apple-body text-slate-300">太陽</p>
+                            </div>
+                        </div>
+                    </main>
+                    <nav class="bg-black/30 backdrop-blur-md border-t border-slate-700/50">
+                        <div class="flex justify-around items-center h-[84px] pb-6">
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0L2.41 11.47a.75.75 0 101.06 1.06l8-8z" /></svg>
+                                <span class="apple-caption mt-1">首頁</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 000-1.214.75.75 0 00-.67-.211 8.25 8.25 0 01-4.08.966 8.235 8.235 0 01-1.75-.221V4.773c.532-.163 1.12-.248 1.75-.248a8.25 8.25 0 014.08.966.75.75 0 00.67-.211.75.75 0 000-1.214z" /><path d="M12.75 4.533A9.707 9.707 0 0118 3a9.735 9.735 0 013.25.555.75.75 0 01.5.707v14.25a.75.75 0 01-1 .707A9.735 9.735 0 0118 21a9.707 9.707 0 01-5.25-1.533.75.75 0 010-1.214.75.75 0 01.67-.211 8.25 8.25 0 004.08.966 8.235 8.235 0 001.75-.221V4.773a8.235 8.235 0 00-1.75-.248 8.25 8.25 0 00-4.08.966.75.75 0 01-.67-.211.75.75 0 010-1.214z" /></svg>
+                                <span class="apple-caption mt-1">牌卡</span>
+                            </div>
+                            <div class="text-center text-purple-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v1.5c0 1.036.84 1.875 1.875 1.875h.375a3 3 0 013 3v1.5H6a.75.75 0 000 1.5h12a.75.75 0 000-1.5h-5.25v-1.5a3 3 0 013-3h.375C17.16 6.75 18 5.91 18 4.875v-1.5C18 2.34 17.161 1.5 16.125 1.5H7.875zM6 15a.75.75 0 000 1.5h12a.75.75 0 000-1.5H6z" clip-rule="evenodd" /><path d="M3 10.875C3 9.84 3.84 9 4.875 9H19.125c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875H4.875A1.875 1.875 0 013 19.125v-8.25z" /></svg>
+                                <span class="apple-caption mt-1">日誌</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.946 1.55l-.261 1.043a2.25 2.25 0 01-1.23 1.23l-1.043.261c-.887.247-1.55.989-1.55 1.946l0 .261a2.25 2.25 0 011.55 1.946l1.043.261a2.25 2.25 0 011.23 1.23l.261 1.043c.247.887.989 1.55 1.946 1.55l.261 0c.957 0 1.699-.663 1.946-1.55l.261-1.043a2.25 2.25 0 011.23-1.23l1.043-.261c.887-.247 1.55-.989 1.55-1.946l0-.261c0-.957-.663-1.699-1.55-1.946l-1.043-.261a2.25 2.25 0 01-1.23-1.23l-.261-1.043C12.777 2.913 12.035 2.25 11.078 2.25zM12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" clip-rule="evenodd" /><path d="M12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.882 6.168a.75.75 0 01.323 1.022l-3.535 6.06a.75.75 0 01-1.345-.785l3.535-6.06a.75.75 0 011.022-.237zm-13.764 0a.75.75 0 011.022.237l3.535 6.06a.75.75 0 01-1.345.785l-3.535-6.06a.75.75 0 01.323-1.022z" /></svg>
+                                <span class="apple-caption mt-1">設定</span>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ======================================================= -->
+        <!-- 6. Settings Screen (MODIFIED)                           -->
+        <!-- ======================================================= -->
+        <section id="settings-screen">
+             <div class="flex flex-col items-center space-y-2 mb-4">
+                <h2 class="text-white text-lg font-semibold">6. 設定</h2>
+                <p class="text-slate-400 text-sm">App 外觀與通知設定。</p>
+            </div>
+            <div class="iphone-pro-frame">
+                <div class="iphone-pro-screen">
+                    <div class="dynamic-island"></div>
+                    <main class="screen-content flex flex-col pt-12">
+                        <div class="p-4 sticky top-0 bg-slate-950/80 backdrop-blur-md z-10 border-b border-slate-800">
+                           <h1 class="apple-title-1 text-center">設定</h1>
+                        </div>
+                        <div class="flex-grow p-6 space-y-8">
+                             <div>
+                                <h3 class="apple-subhead text-slate-500 uppercase tracking-wider mb-2">外觀</h3>
+                                <div class="bg-slate-800/50 rounded-xl border border-slate-700 divide-y divide-slate-700">
+                                    <div class="flex justify-between items-center p-4">
+                                        <span class="apple-body">淺色模式</span>
+                                        <div class="toggle-switch"><div class="toggle-switch-background"></div><div class="toggle-switch-handle"></div></div>
+                                    </div>
+                                </div>
+                             </div>
+                             <div>
+                                <h3 class="apple-subhead text-slate-500 uppercase tracking-wider mb-2">通知</h3>
+                                <div class="bg-slate-800/50 rounded-xl border border-slate-700 divide-y divide-slate-700">
+                                    <div class="flex justify-between items-center p-4">
+                                        <span class="apple-body">每日抽牌通知</span>
+                                        <div class="toggle-switch toggle-on"><div class="toggle-switch-background"></div><div class="toggle-switch-handle"></div></div>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                    </main>
+                    <nav class="bg-black/30 backdrop-blur-md border-t border-slate-700/50">
+                        <div class="flex justify-around items-center h-[84px] pb-6">
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0L2.41 11.47a.75.75 0 101.06 1.06l8-8z" /></svg>
+                                <span class="apple-caption mt-1">首頁</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 000-1.214.75.75 0 00-.67-.211 8.25 8.25 0 01-4.08.966 8.235 8.235 0 01-1.75-.221V4.773c.532-.163 1.12-.248 1.75-.248a8.25 8.25 0 014.08.966.75.75 0 00.67-.211.75.75 0 000-1.214z" /><path d="M12.75 4.533A9.707 9.707 0 0118 3a9.735 9.735 0 013.25.555.75.75 0 01.5.707v14.25a.75.75 0 01-1 .707A9.735 9.735 0 0118 21a9.707 9.707 0 01-5.25-1.533.75.75 0 010-1.214.75.75 0 01.67-.211 8.25 8.25 0 004.08.966 8.235 8.235 0 001.75-.221V4.773a8.235 8.235 0 00-1.75-.248 8.25 8.25 0 00-4.08.966.75.75 0 01-.67-.211.75.75 0 010-1.214z" /></svg>
+                                <span class="apple-caption mt-1">牌卡</span>
+                            </div>
+                            <div class="text-center text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v1.5c0 1.036.84 1.875 1.875 1.875h.375a3 3 0 013 3v1.5H6a.75.75 0 000 1.5h12a.75.75 0 000-1.5h-5.25v-1.5a3 3 0 013-3h.375C17.16 6.75 18 5.91 18 4.875v-1.5C18 2.34 17.161 1.5 16.125 1.5H7.875zM6 15a.75.75 0 000 1.5h12a.75.75 0 000-1.5H6z" clip-rule="evenodd" /><path d="M3 10.875C3 9.84 3.84 9 4.875 9H19.125c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875H4.875A1.875 1.875 0 013 19.125v-8.25z" /></svg>
+                                <span class="apple-caption mt-1">日誌</span>
+                            </div>
+                            <div class="text-center text-purple-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto"><path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.946 1.55l-.261 1.043a2.25 2.25 0 01-1.23 1.23l-1.043.261c-.887.247-1.55.989-1.55 1.946l0 .261a2.25 2.25 0 011.55 1.946l1.043.261a2.25 2.25 0 011.23 1.23l.261 1.043c.247.887.989 1.55 1.946 1.55l.261 0c.957 0 1.699-.663 1.946-1.55l.261-1.043a2.25 2.25 0 011.23-1.23l1.043-.261c.887-.247 1.55-.989 1.55-1.946l0-.261c0-.957-.663-1.699-1.55-1.946l-1.043-.261a2.25 2.25 0 01-1.23-1.23l-.261-1.043C12.777 2.913 12.035 2.25 11.078 2.25zM12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" clip-rule="evenodd" /><path d="M12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.882 6.168a.75.75 0 01.323 1.022l-3.535 6.06a.75.75 0 01-1.345-.785l3.535-6.06a.75.75 0 011.022-.237zm-13.764 0a.75.75 0 011.022.237l3.535 6.06a.75.75 0 01-1.345.785l-3.535-6.06a.75.75 0 01.323-1.022z" /></svg>
+                                <span class="apple-caption mt-1">設定</span>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <section id="developer-instructions" class="mt-20 max-w-4xl mx-auto text-slate-300 bg-slate-900 rounded-2xl border border-slate-700 p-8">
+        <h2 class="text-3xl font-bold text-white mb-4">🧭 開發人員交付說明</h2>
+        <div class="space-y-6 apple-body">
+            <div>
+                <h3 class="text-lg font-semibold text-purple-400 mb-2">1. 畫面邏輯與導航</h3>
+                <ul class="list-disc list-inside space-y-2 text-slate-400">
+                    <li>此應用程式圍繞標準的 SwiftUI `TabView` 構建，現在有 4 個分頁。</li>
+                    <li><strong class="text-slate-200">首頁 (`#home-screen`):</strong> 應用程式的入口點。對應 `HomeView.swift`。</li>
+                    <li><strong class="text-slate-200">占卜結果 (`#reading-result-screen` & `#reading-result-saved-screen`):</strong> 顯示抽出的牌卡。`#reading-result-saved-screen` 展示了點擊儲存按鈕後的 UI 狀態。開發時，點擊「儲存至日誌」按鈕應：
+                        <ol class="list-decimal list-inside pl-4">
+                            <li>使用 `Date()` 獲取當前時間戳。</li>
+                            <li>將結果（牌陣、牌卡、時間戳）使用 `SwiftData` (或 Core Data) 保存。</li>
+                            <li>更新 UI 至 "已儲存" 狀態，如禁用按鈕並顯示時間。</li>
+                        </ol>
+                    </li>
+                    <li><strong class="text-slate-200">牌卡圖書館 (`#library-screen`):</strong> 第二個分頁，對應 `CardLibraryView.swift`。</li>
+                    <li><strong class="text-slate-200">占卜日誌 (`#journal-screen`):</strong> 新增的第四個分頁。從 `SwiftData` 讀取並顯示紀錄列表。對應 `JournalView.swift`。</li>
+                    <li><strong class="text-slate-200">設定 (`#settings-screen`):</strong> 第三個分頁。包含用於切換外觀模式和推播通知的 `Toggle`。對應 `SettingsView.swift`。</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-purple-400 mb-2">2. SwiftUI 元件映射</h3>
+                <ul class="list-disc list-inside space-y-2 text-slate-400">
+                    <li><strong class="text-slate-200">手機框架:</strong> 這是一個視覺指南。SwiftUI 中的主要容器將是 `ContentView.swift`，包含 `TabView`。</li>
+                    <li><strong class="text-slate-200">塔羅牌卡 (`.tarot-card`):</strong> 可重用的 `TarotCardView.swift`。佔位圖示應替換為實際的牌卡藝術作品。</li>
+                    <li><strong class="text-slate-200">列表:</strong> 設定和日誌畫面使用 SwiftUI `List` 與 `Section` 標題。</li>
+                    <li><strong class="text-slate-200">切換開關 (`.toggle-switch`):</strong> 對應到 SwiftUI 的 `Toggle` 元件，並使用 `.tint()` 修改器來設定開啟時的顏色。</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-purple-400 mb-2">3. 資源與樣式</h3>
+                <ul class="list-disc list-inside space-y-2 text-slate-400">
+                    <li><strong class="text-slate-200">調色板:</strong>
+                        <ul class="list-disc list-inside pl-4">
+                            <li>背景: `slate-950` (#020617)</li>
+                            <li>主要文本: `slate-200` (#E2E8F0)</li>
+                            <li>次要文本: `slate-400` (#94A3B8)</li>
+                            <li>主要強調色: `purple-500` (#A855F7)</li>
+                            <li>次要強調色: `amber-400` (#F59E0B)</li>
+                        </ul>
+                        這些顏色應作為顏色集添加到 `Assets.xcassets` 文件中，以便在 SwiftUI 中輕鬆使用。
+                    </li>
+                    <li><strong class="text-slate-200">字體:</strong> 原型使用系統字體堆疊。在 SwiftUI 中，請使用 `.font(.largeTitle)`、`.font(.headline)` 等，以符合 HIG 規範。
+                    </li>
+                    <li><strong class="text-slate-200">圖示:</strong> 圖示來自 Heroicons。可以導出為 SVG 並添加到 `Assets.xcassets` 中，或安裝為 SF Symbols。</li>
+                    <li><strong class="text-slate-200">牌卡藝術作品:</strong> 佔位符牌卡內容 (SVG) 必須替換為 78 張獨特的塔羅牌卡圖像。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

@@ -12,7 +12,8 @@ import SwiftData
 struct Tarot3App: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            TarotCardData.self,
+            JournalEntryData.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
