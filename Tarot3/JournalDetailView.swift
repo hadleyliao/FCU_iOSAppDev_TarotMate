@@ -66,11 +66,12 @@ struct JournalDetailView: View {
 }
 
 #Preview {
-    let card = TarotCardData(name: "愚者", imageName: "the_fool", details: "代表新的開始、天真、自發性和自由精神。")
-    let entry = JournalEntryData(date: Date(), spreadType: "每日牌卡", cards: [card], interpretation: "這是一段綜合解說的範例文字。")
+    let container = ModelContainer.forPreview()
+    let fetchDescriptor = FetchDescriptor<JournalEntryData>()
+    let entry = try! container.mainContext.fetch(fetchDescriptor).first!
     
     return NavigationView {
         JournalDetailView(entry: entry)
     }
-    .modelContainer(for: [JournalEntryData.self, TarotCardData.self], inMemory: true)
+    .modelContainer(container)
 }
