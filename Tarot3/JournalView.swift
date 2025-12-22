@@ -10,39 +10,33 @@ struct JournalView: View {
             ZStack {
                 Color("AppBackground").ignoresSafeArea()
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .center, spacing: 0) {
                     Text("占卜日誌")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(Color("PrimaryText"))
-                        .padding(.horizontal)
                         .padding(.top)
+                    
+                    Divider()
+                        .background(Color("ListItemBackground"))
+                        .padding(.horizontal)
+                        .padding(.bottom)
 
                     List {
                         ForEach(entries) { entry in
                             NavigationLink(destination: JournalDetailView(entry: entry)) {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text(entry.date, format: .dateTime.year().month().day().hour().minute())
-                                        .font(.subheadline)
-                                        .foregroundColor(Color("SecondaryText"))
-                                    Text(entry.spreadType)
-                                        .font(.headline)
-                                        .foregroundColor(Color("PrimaryText"))
-                                    Text(entry.cards.map { $0.name }.joined(separator: ", "))
-                                        .font(.body)
-                                        .foregroundColor(Color("PrimaryText").opacity(0.8))
-                                }
-                                .padding(.vertical, 8)
-                                .foregroundColor(Color("PrimaryText")) // Explicitly set foreground color for the link content
+                                JournalEntryCardView(entry: entry)
                             }
-                            .listRowBackground(Color("ListItemBackground"))
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                            .padding(.bottom, 8)
                         }
                         .onDelete(perform: deleteEntries)
                     }
                     .listStyle(.plain)
                 }
             }
-            .navigationBarHidden(true) // Hide the original navigation bar
+            .navigationBarHidden(true)
         }
     }
     
@@ -52,6 +46,54 @@ struct JournalView: View {
                 modelContext.delete(entries[index])
             }
         }
+    }
+}
+
+struct JournalEntryCardView: View {
+    let entry: JournalEntryData
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(entry.date, format: .dateTime.year().month().day().hour().minute())
+                .font(.caption)
+                .foregroundColor(Color("SecondaryText"))
+            
+            Text(entry.spreadType)
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundColor(Color("PrimaryText"))
+            
+            if entry.spreadType == "三牌陣" && entry.cards.count == 3 {
+                ThreeCardSpreadRow(cards: entry.cards)
+            } else {
+                Text(entry.cards.map { $0.name }.joined(separator: ", "))
+                    .font(.body)
+                    .foregroundColor(Color("PrimaryText").opacity(0.8))
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color("ListItemBackground"))
+        .cornerRadius(12)
+    }
+}
+
+struct ThreeCardSpreadRow: View {
+    let cards: [TarotCardData]
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            Text("過去:").foregroundColor(Color("SecondaryAccent"))
+            Text(cards[0].name + ",")
+            
+            Text("現在:").foregroundColor(Color("SecondaryAccent"))
+            Text(cards[1].name + ",")
+            
+            Text("未來:").foregroundColor(Color("SecondaryAccent"))
+            Text(cards[2].name)
+        }
+        .font(.body)
+        .foregroundColor(Color("PrimaryText").opacity(0.8))
     }
 }
 

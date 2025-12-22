@@ -20,26 +20,60 @@ struct CardLibraryView: View {
             ZStack {
                 Color("AppBackground").ignoresSafeArea()
 
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(filteredCards) { card in
-                            VStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color("PrimaryAccent").opacity(0.3))
-                                    .aspectRatio(5/9, contentMode: .fit)
-                                
-                                Text(card.name)
-                                    .foregroundColor(Color("SecondaryText"))
-                                    .font(.caption)
+                VStack(spacing: 16) {
+                    Text("牌卡圖書館")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("PrimaryText"))
+                        .padding(.top)
+
+                    // Custom Search Bar
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(Color("SecondaryText"))
+                        TextField("搜尋牌卡...", text: $searchText)
+                            .foregroundColor(Color("PrimaryText"))
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
+                    .background(Color("ListItemBackground"))
+                    .cornerRadius(10)
+                    .padding(.horizontal)
+
+                    Divider()
+                        .background(Color("ListItemBackground"))
+                        .padding(.horizontal)
+
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(filteredCards) { card in
+                            NavigationLink(destination: CardDetailView(card: card)) {
+                                VStack {
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(Color("ListItemBackground"))
+                                        .aspectRatio(5/9, contentMode: .fit)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .stroke(LinearGradient(
+                                                    gradient: Gradient(colors: [Color("PrimaryAccent").opacity(0.5), Color("SecondaryAccent").opacity(0.5)]),
+                                                    startPoint: .topLeading,
+                                                    endPoint: .bottomTrailing
+                                                ), lineWidth: 1)
+                                        )
+                                    
+                                    Text(card.name)
+                                        .foregroundColor(Color("SecondaryText"))
+                                        .font(.caption)
+                                }
+                            }
+                            .buttonStyle(PlainButtonStyle())
                             }
                         }
+                        .padding()
                     }
-                    .padding()
                 }
             }
-            .navigationTitle("牌卡圖書館")
-            .searchable(text: $searchText, prompt: "搜尋牌卡...")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarHidden(true)
         }
     }
 }

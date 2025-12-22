@@ -45,22 +45,21 @@ struct JournalDetailView: View {
                         .frame(maxWidth: .infinity)
                     }
                     
-                    Divider()
-                    
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("綜合解說")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(Color("PrimaryText"))
-                        Text(entry.interpretation)
-                            .font(.body)
-                            .foregroundColor(Color("SecondaryText"))
-                    }
+
                 }
                 .padding()
             }
             .navigationTitle("日誌詳情")
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .onAppear {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor(named: "AppBackground") // Use AppBackground for consistency
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
+            appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
         }
     }
 }
