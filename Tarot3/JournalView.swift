@@ -25,6 +25,7 @@ struct JournalView: View {
                                     .foregroundColor(Color("PrimaryText").opacity(0.8))
                             }
                             .padding(.vertical, 8)
+                            .foregroundColor(Color("PrimaryText")) // Explicitly set foreground color for the link content
                         }
                         .listRowBackground(Color("ListItemBackground"))
                     }
