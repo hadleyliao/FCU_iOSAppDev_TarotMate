@@ -11,67 +11,65 @@ struct ReadingResultView: View {
     @State private var isSaved = false
 
     var body: some View {
-        ZStack {
-            Color("AppBackground").ignoresSafeArea()
+        VStack(spacing: 0) {
+            // Custom Title
+            Text("您的占卜")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(Color("PrimaryText"))
+                .padding(.top)
 
-            VStack(spacing: 0) {
-                // Custom Title
-                Text("您的占卜")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color("PrimaryText"))
-                    .padding(.top)
-
-                ScrollView {
-                    VStack(spacing: 20) {
-                        Text(spreadType)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(Color("PrimaryText"))
-                            .padding(.bottom, 5)
-                        
-                        ForEach(cards) { card in
-                            VStack(spacing: 16) {
-                                Image(card.imageName)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 200)
-                                    .cornerRadius(16)
-                                
-                                Text(card.name)
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(Color("PrimaryText"))
-
-                                Text(card.details)
-                                    .font(.body)
-                                    .foregroundColor(Color("SecondaryText"))
-                                    .multilineTextAlignment(.center)
-                            }
-                            .padding()
-                            .background(Color("ListItemBackground"))
-                            .cornerRadius(10)
-                        }
-                    }
-                    .padding()
-                }
-                
-                Spacer() // Pushes content up and button down
-
-                Button(action: saveReading) {
-                    Text(isSaved ? "已儲存" : "儲存至日誌")
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(isSaved ? Color.gray : Color("PrimaryAccent"))
+            ScrollView {
+                VStack(spacing: 20) {
+                    Text(spreadType)
+                        .font(.title2)
+                        .fontWeight(.bold)
                         .foregroundColor(Color("PrimaryText"))
-                        .cornerRadius(40)
+                        .padding(.bottom, 5)
+                    
+                    ForEach(cards) { card in
+                        VStack(spacing: 16) {
+                            Image(card.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 200)
+                                .cornerRadius(16)
+                            
+                            Text(card.name)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(Color("PrimaryText"))
+
+                            Text(card.details)
+                                .font(.body)
+                                .foregroundColor(Color("SecondaryText"))
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding()
+                        .background(Color("ListItemBackground"))
+                        .cornerRadius(10)
+                    }
                 }
-                .disabled(isSaved)
-                .padding(.horizontal)
-                .padding(.bottom) // Add some padding from the bottom safe area
+                .padding()
             }
+            
+            Spacer() // Pushes content up and button down
+
+            Button(action: saveReading) {
+                Text(isSaved ? "已儲存" : "儲存至日誌")
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(isSaved ? Color.gray : Color("PrimaryAccent"))
+                    .foregroundColor(Color("PrimaryText"))
+                    .cornerRadius(40)
+            }
+            .disabled(isSaved)
+            .padding(.horizontal)
+            .padding(.bottom) // Add some padding from the bottom safe area
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color("AppBackground").ignoresSafeArea())
     }
     
     private func saveReading() {

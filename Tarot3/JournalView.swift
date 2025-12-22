@@ -7,35 +7,24 @@ struct JournalView: View {
 
     var body: some View {
         NavigationView {
-            ZStack {
-                Color("AppBackground").ignoresSafeArea()
-                
-                VStack(alignment: .center, spacing: 0) {
-                    Text("占卜日誌")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color("PrimaryText"))
-                        .padding(.top)
-                    
-                    Divider()
-                        .background(Color("ListItemBackground"))
-                        .padding(.horizontal)
-                        .padding(.bottom)
+            VStack(alignment: .center, spacing: 0) {
+                CustomHeaderView(title: "占卜日誌")
 
-                    List {
-                        ForEach(entries) { entry in
-                            NavigationLink(destination: JournalDetailView(entry: entry)) {
-                                JournalEntryCardView(entry: entry)
-                            }
-                            .listRowBackground(Color.clear)
-                            .listRowSeparator(.hidden)
-                            .padding(.bottom, 8)
+                List {
+                    ForEach(entries) { entry in
+                        NavigationLink(destination: JournalDetailView(entry: entry)) {
+                            JournalEntryCardView(entry: entry)
                         }
-                        .onDelete(perform: deleteEntries)
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                        .padding(.bottom, 8)
                     }
-                    .listStyle(.plain)
+                    .onDelete(perform: deleteEntries)
                 }
+                .listStyle(.plain)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color("AppBackground").ignoresSafeArea())
             .navigationBarHidden(true)
         }
     }

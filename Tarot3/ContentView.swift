@@ -3,6 +3,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppSettings.self) private var appSettings
 
     var body: some View {
         TabView {
@@ -29,10 +30,12 @@ struct ContentView: View {
         .onAppear {
             TarotDeck.populate(context: modelContext)
         }
+        .preferredColorScheme(appSettings.colorScheme)
     }
 }
 
 #Preview {
     ContentView()
         .modelContainer(ModelContainer.forPreview())
+        .environment(AppSettings())
 }

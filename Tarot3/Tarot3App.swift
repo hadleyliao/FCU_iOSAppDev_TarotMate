@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct Tarot3App: App {
+    @State private var appSettings = AppSettings()
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             TarotCardData.self,
@@ -27,6 +29,7 @@ struct Tarot3App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(appSettings)
         }
         .modelContainer(sharedModelContainer)
     }
