@@ -12,29 +12,27 @@ struct JournalView: View {
                 
                 List {
                     ForEach(entries) { entry in
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(entry.date, format: .dateTime.year().month().day().hour().minute())
-                                .font(.subheadline)
-                                .foregroundColor(Color("SecondaryText"))
-                            Text(entry.spreadType)
-                                .font(.headline)
-                                .foregroundColor(Color("PrimaryText"))
-                            Text(entry.cards.map { $0.name }.joined(separator: ", "))
-                                .font(.body)
-                                .foregroundColor(Color("PrimaryText").opacity(0.8))
+                        NavigationLink(destination: JournalDetailView(entry: entry)) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(entry.date, format: .dateTime.year().month().day().hour().minute())
+                                    .font(.subheadline)
+                                    .foregroundColor(Color("SecondaryText"))
+                                Text(entry.spreadType)
+                                    .font(.headline)
+                                    .foregroundColor(Color("PrimaryText"))
+                                Text(entry.cards.map { $0.name }.joined(separator: ", "))
+                                    .font(.body)
+                                    .foregroundColor(Color("PrimaryText").opacity(0.8))
+                            }
+                            .padding(.vertical, 8)
                         }
-                        .padding(.vertical, 8)
                         .listRowBackground(Color("ListItemBackground"))
                     }
-                    .onDelete(perform: deleteEntries)
                 }
                 .listStyle(.plain)
             }
             .navigationTitle("占卜日誌")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                EditButton()
-            }
         }
         .onAppear {
             let appearance = UINavigationBarAppearance()
@@ -44,14 +42,6 @@ struct JournalView: View {
             appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
             UINavigationBar.appearance().standardAppearance = appearance
             UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        }
-    }
-    
-    private func deleteEntries(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(entries[index])
-            }
         }
     }
 }

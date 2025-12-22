@@ -1,10 +1,15 @@
 import SwiftUI
 import SwiftData
 
+struct ReadingResult: Identifiable {
+    let id = UUID()
+    let cards: [TarotCardData]
+    let spreadType: String
+}
+
 struct HomeView: View {
     @Query private var cards: [TarotCardData]
-    @State private var showReadingResult = false
-    @State private var drawnCards: [TarotCardData] = []
+    @State private var readingResult: ReadingResult?
     
     var body: some View {
         NavigationView {
@@ -22,7 +27,7 @@ struct HomeView: View {
                             .font(.system(size: 80))
                             .foregroundColor(Color("PrimaryAccent"))
 
-                        Text("神秘面紗")
+                        Text("🃏 心之所想，心之所向 🃏")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(Color("PrimaryText"))
@@ -63,17 +68,21 @@ struct HomeView: View {
                 }
             }
             .navigationBarHidden(true)
-            .sheet(isPresented: $showReadingResult) {
-                if !drawnCards.isEmpty {
-                    ReadingResultView(cards: drawnCards, spreadType: "每日牌卡")
-                }
+            .sheet(item: $readingResult) { result in
+                ReadingResultView(cards: result.cards, spreadType: result.spreadType)
             }
         }
     }
     
     private func drawDailyCard() {
-        drawnCards = [cards.randomElement() ?? TarotDeck.cards[0]]
-        showReadingResult = true
+        if let card = cards.randomElement() {
+            readingResult = ReadingResult(cards: [card], spreadType: "每日牌卡")
+        } else {
+            // Handle case where cards are not loaded yet, though unlikely
+            if let fallbackCard = TarotDeck.cards.first {
+                readingResult = ReadingResult(cards: [fallbackCard], spreadType: "每日牌卡")
+            }
+        }
     }
 }
 
