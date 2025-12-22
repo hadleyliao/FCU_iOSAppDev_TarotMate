@@ -66,13 +66,11 @@ struct JournalDetailView: View {
 }
 
 #Preview {
-    // Need to create mock data for preview
-    let container = try! ModelContainer(for: [JournalEntryData.self, TarotCardData.self], configurations: [ModelConfiguration(isStoredInMemoryOnly: true)])
     let card = TarotCardData(name: "愚者", imageName: "the_fool", details: "代表新的開始、天真、自發性和自由精神。")
     let entry = JournalEntryData(date: Date(), spreadType: "每日牌卡", cards: [card], interpretation: "這是一段綜合解說的範例文字。")
     
-    NavigationView {
+    return NavigationView {
         JournalDetailView(entry: entry)
     }
-    .modelContainer(container)
+    .modelContainer(for: [JournalEntryData.self, TarotCardData.self], inMemory: true)
 }

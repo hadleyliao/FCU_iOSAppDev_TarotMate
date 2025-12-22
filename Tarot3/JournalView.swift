@@ -28,20 +28,20 @@ struct JournalView: View {
                         }
                         .listRowBackground(Color("ListItemBackground"))
                     }
+                    .onDelete(perform: deleteEntries)
                 }
                 .listStyle(.plain)
             }
             .navigationTitle("占卜日誌")
             .navigationBarTitleDisplayMode(.large)
         }
-        .onAppear {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor(named: "AppBackground")
-            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
-            appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
-            UINavigationBar.appearance().standardAppearance = appearance
-            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
+    
+    private func deleteEntries(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                modelContext.delete(entries[index])
+            }
         }
     }
 }

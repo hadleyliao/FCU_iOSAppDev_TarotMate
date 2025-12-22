@@ -25,15 +25,6 @@ struct SettingsView: View {
             .navigationTitle("設定")
             .navigationBarTitleDisplayMode(.large)
         }
-        .onAppear {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor(named: "AppBackground")
-            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
-            appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
-            UINavigationBar.appearance().standardAppearance = appearance
-            UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        }
     }
 }
 
