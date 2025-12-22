@@ -69,6 +69,7 @@ struct JournalDetailView: View {
                             }
                         }
                         .padding()
+                        Spacer() // Added to push content up and fill remaining space
                     }
                 }
             }
