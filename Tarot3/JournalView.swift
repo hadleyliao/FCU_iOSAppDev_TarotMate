@@ -36,6 +36,15 @@ struct JournalView: View {
             .navigationTitle("占卜日誌")
             .navigationBarTitleDisplayMode(.large)
         }
+        .onAppear {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor(named: "AppBackground") // Use AppBackground for consistency
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
+            appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
     }
     
     private func deleteEntries(offsets: IndexSet) {
