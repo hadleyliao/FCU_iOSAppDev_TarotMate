@@ -11,52 +11,66 @@ struct ReadingResultView: View {
     @State private var isSaved = false
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color("AppBackground").ignoresSafeArea()
+        ZStack {
+            Color("AppBackground").ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                // Custom Title
+                Text("您的占卜")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("PrimaryText"))
+                    .padding(.top)
 
                 ScrollView {
                     VStack(spacing: 20) {
                         Text(spreadType)
-                            .font(.largeTitle)
+                            .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(Color("PrimaryText"))
+                            .padding(.bottom, 5)
                         
                         ForEach(cards) { card in
-                            VStack {
+                            VStack(spacing: 16) {
+                                Image(card.imageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 200)
+                                    .cornerRadius(16)
+                                
                                 Text(card.name)
-                                    .font(.headline)
-                                    .foregroundColor(Color("PrimaryAccent"))
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color("PrimaryText"))
+
                                 Text(card.details)
                                     .font(.body)
                                     .foregroundColor(Color("SecondaryText"))
                                     .multilineTextAlignment(.center)
-                                    .padding(.horizontal)
                             }
                             .padding()
                             .background(Color("ListItemBackground"))
                             .cornerRadius(10)
                         }
-                        
-                        Button(action: saveReading) {
-                            Text(isSaved ? "已儲存" : "儲存至日誌")
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(isSaved ? Color.gray : Color("PrimaryAccent"))
-                                .foregroundColor(Color("PrimaryText"))
-                                .cornerRadius(40)
-                        }
-                        .disabled(isSaved)
                     }
                     .padding()
                 }
+                
+                Spacer() // Pushes content up and button down
+
+                Button(action: saveReading) {
+                    Text(isSaved ? "已儲存" : "儲存至日誌")
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(isSaved ? Color.gray : Color("PrimaryAccent"))
+                        .foregroundColor(Color("PrimaryText"))
+                        .cornerRadius(40)
+                }
+                .disabled(isSaved)
+                .padding(.horizontal)
+                .padding(.bottom) // Add some padding from the bottom safe area
             }
-            .navigationTitle("您的占卜")
-            .navigationBarItems(trailing: Button("完成") {
-                presentationMode.wrappedValue.dismiss()
-            })
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -65,6 +79,9 @@ struct ReadingResultView: View {
         let newEntry = JournalEntryData(date: Date(), spreadType: spreadType, cards: cards, interpretation: interpretation)
         modelContext.insert(newEntry)
         isSaved = true
+        
+        // Dismiss the view after saving
+        presentationMode.wrappedValue.dismiss()
     }
 }
 

@@ -10,11 +10,11 @@ struct CardDetailView: View {
             
             ScrollView {
                 VStack(spacing: 24) {
-                    // Placeholder for card image
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color("ListItemBackground"))
-                        .aspectRatio(5/9, contentMode: .fit)
+                    Image(card.imageName)
+                        .resizable()
+                        .scaledToFit()
                         .frame(width: 250)
+                        .cornerRadius(20)
                         .overlay(
                             RoundedRectangle(cornerRadius: 20)
                                 .stroke(LinearGradient(

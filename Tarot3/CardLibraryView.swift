@@ -49,9 +49,10 @@ struct CardLibraryView: View {
                             ForEach(filteredCards) { card in
                             NavigationLink(destination: CardDetailView(card: card)) {
                                 VStack {
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .fill(Color("ListItemBackground"))
-                                        .aspectRatio(5/9, contentMode: .fit)
+                                    Image(card.imageName)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .cornerRadius(16)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 16)
                                                 .stroke(LinearGradient(

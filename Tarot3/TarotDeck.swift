@@ -28,32 +28,26 @@ class TarotDeck {
         ]
         
         static func populate(context: ModelContext) {
-        // More robust check: repopulate if count is wrong or content seems outdated.
-        let descriptor = FetchDescriptor<TarotCardData>(sortBy: [SortDescriptor(\.name)])
-        
+        // Non-destructive population: only add cards that are missing.
         do {
+            let descriptor = FetchDescriptor<TarotCardData>()
             let existingCards = try context.fetch(descriptor)
+            let existingCardNames = Set(existingCards.map { $0.name })
             
-            // Check if repopulation is needed
-            if existingCards.count != TarotDeck.cards.count || (existingCards.first?.details != TarotDeck.cards.first?.details) {
-                
-                // Data is incomplete or outdated, repopulate fully.
-                
-                // 1. Delete all existing cards to ensure a clean slate.
-                try context.delete(model: TarotCardData.self)
-                
-                // 2. Insert all cards from the static list.
-                for card in cards {
-                    context.insert(card)
-                }
-                
-                // 3. Save the changes to disk.
+            // Filter for cards that are not already in the database
+            let newCards = cards.filter { !existingCardNames.contains($0.name) }
+            
+            // Insert only the new cards
+            for card in newCards {
+                context.insert(card)
+            }
+            
+            // If new cards were added, save the context
+            if !newCards.isEmpty {
                 try context.save()
             }
         } catch {
-            // If fetching or deleting fails, we can log the error.
-            // For now, we'll proceed assuming it's a first run.
-            print("Failed to check or repopulate Tarot deck: \\(error)")
+            print("Failed to populate or check Tarot deck: \\(error)")
         }
     }
 }
