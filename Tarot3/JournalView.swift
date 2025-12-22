@@ -10,40 +10,39 @@ struct JournalView: View {
             ZStack {
                 Color("AppBackground").ignoresSafeArea()
                 
-                List {
-                    ForEach(entries) { entry in
-                        NavigationLink(destination: JournalDetailView(entry: entry)) {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text(entry.date, format: .dateTime.year().month().day().hour().minute())
-                                    .font(.subheadline)
-                                    .foregroundColor(Color("SecondaryText"))
-                                Text(entry.spreadType)
-                                    .font(.headline)
-                                    .foregroundColor(Color("PrimaryText"))
-                                Text(entry.cards.map { $0.name }.joined(separator: ", "))
-                                    .font(.body)
-                                    .foregroundColor(Color("PrimaryText").opacity(0.8))
+                VStack(alignment: .leading) {
+                    Text("占卜日誌")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("PrimaryText"))
+                        .padding(.horizontal)
+                        .padding(.top)
+
+                    List {
+                        ForEach(entries) { entry in
+                            NavigationLink(destination: JournalDetailView(entry: entry)) {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text(entry.date, format: .dateTime.year().month().day().hour().minute())
+                                        .font(.subheadline)
+                                        .foregroundColor(Color("SecondaryText"))
+                                    Text(entry.spreadType)
+                                        .font(.headline)
+                                        .foregroundColor(Color("PrimaryText"))
+                                    Text(entry.cards.map { $0.name }.joined(separator: ", "))
+                                        .font(.body)
+                                        .foregroundColor(Color("PrimaryText").opacity(0.8))
+                                }
+                                .padding(.vertical, 8)
+                                .foregroundColor(Color("PrimaryText")) // Explicitly set foreground color for the link content
                             }
-                            .padding(.vertical, 8)
-                            .foregroundColor(Color("PrimaryText")) // Explicitly set foreground color for the link content
+                            .listRowBackground(Color("ListItemBackground"))
                         }
-                        .listRowBackground(Color("ListItemBackground"))
+                        .onDelete(perform: deleteEntries)
                     }
-                    .onDelete(perform: deleteEntries)
+                    .listStyle(.plain)
                 }
-                .listStyle(.plain)
             }
-            .navigationTitle("占卜日誌")
-            .navigationBarTitleDisplayMode(.large)
-        }
-        .onAppear {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor(named: "AppBackground") // Use AppBackground for consistency
-            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
-            appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "PrimaryText")!]
-            UINavigationBar.appearance().standardAppearance = appearance
-            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+            .navigationBarHidden(true) // Hide the original navigation bar
         }
     }
     

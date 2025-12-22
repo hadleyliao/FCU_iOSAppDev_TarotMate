@@ -46,6 +46,9 @@ struct CardLibraryView: View {
 
 
 #Preview {
-    CardLibraryView()
+    let container = try! ModelContainer(for: [TarotCardData.self, JournalEntryData.self], configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    TarotDeck.populate(context: container.mainContext)
+    
+    return CardLibraryView()
         .modelContainer(for: [TarotCardData.self, JournalEntryData.self], inMemory: true)
 }
