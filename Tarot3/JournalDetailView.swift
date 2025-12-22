@@ -10,11 +10,12 @@ struct JournalDetailView: View {
                 Color("AppBackground").ignoresSafeArea()
                 
                 VStack(alignment: .center, spacing: 0) {
+                    // Custom Title
                     Text("日誌詳情")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(Color("PrimaryText"))
-                        .padding(.top, 0)
+                        .padding(.top) // Let SwiftUI handle safe area padding
                     
                     Divider()
                         .background(Color("ListItemBackground"))
@@ -77,6 +78,7 @@ struct JournalDetailView: View {
         }
     }
 }
+
 
 #Preview {
     let container = ModelContainer.forPreview()
