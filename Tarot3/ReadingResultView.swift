@@ -73,5 +73,5 @@ struct ReadingResultView: View {
         TarotCardData(name: "愚者", imageName: "the_fool", details: "代表新的開始、天真、自發性和自由精神。"),
         TarotCardData(name: "魔術師", imageName: "the_magician", details: "代表顯化、足智多謀、力量和靈感。")
     ], spreadType: "三牌陣")
-    .modelContainer(for: [TarotCardData.self, JournalEntryData.self], inMemory: true)
+    .modelContainer(for: TarotCardData.self, JournalEntryData.self, inMemory: true)
 }

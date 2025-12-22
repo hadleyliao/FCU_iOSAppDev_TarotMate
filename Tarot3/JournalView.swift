@@ -49,5 +49,5 @@ struct JournalView: View {
 
 #Preview {
     JournalView()
-        .modelContainer(for: [TarotCardData.self, JournalEntryData.self], inMemory: true)
+        .modelContainer(for: TarotCardData.self, JournalEntryData.self, inMemory: true)
 }

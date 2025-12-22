@@ -56,5 +56,5 @@ struct CardLibraryView: View {
 
 #Preview {
     CardLibraryView()
-        .modelContainer(for: [TarotCardData.self, JournalEntryData.self], inMemory: true)
+        .modelContainer(for: TarotCardData.self, JournalEntryData.self, inMemory: true)
 }
