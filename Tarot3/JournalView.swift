@@ -15,7 +15,7 @@ struct JournalView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(Color("PrimaryText"))
-                        .padding(.top)
+                        .padding(.top, 60)
                     
                     Divider()
                         .background(Color("ListItemBackground"))
