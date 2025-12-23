@@ -4,7 +4,8 @@ import UserNotifications
 struct SettingsView: View {
     @Environment(AppSettings.self) private var appSettings
     
-    @State private var isNotificationEnabled = false
+    @AppStorage("isDailyNotificationEnabled") private var isDailyNotificationEnabled = false
+    
     @AppStorage("notificationTime") private var notificationTime: Date = {
         var components = DateComponents()
         components.hour = 9
@@ -12,14 +13,7 @@ struct SettingsView: View {
         return Calendar.current.date(from: components) ?? Date()
     }()
 
-    private var isLightModeOn: Binding<Bool> {
-        Binding(
-            get: { appSettings.colorScheme == .light },
-            set: { ison in
-                appSettings.colorScheme = ison ? .light : .dark
-            }
-        )
-    }
+    @State private var isLightModeEnabled: Bool = false
 
     var body: some View {
         NavigationView {
@@ -28,39 +22,40 @@ struct SettingsView: View {
                 
                 Form {
                     Section(header: Text("外觀")) {
-                        Toggle("淺色模式", isOn: isLightModeOn)
+                        Toggle("淺色模式", isOn: $isLightModeEnabled)
                     }
                     
                     Section(header: Text("通知")) {
-                        Toggle("每日抽牌通知", isOn: $isNotificationEnabled)
+                        Toggle("每日抽牌通知", isOn: $isDailyNotificationEnabled)
                         
-                        if isNotificationEnabled {
+                        if isDailyNotificationEnabled {
                             DatePicker("提醒時間", selection: $notificationTime, displayedComponents: .hourAndMinute)
                         }
                     }
                 }
-                .foregroundColor(Color("PrimaryText"))
                 .toggleStyle(SwitchToggleStyle(tint: Color("PrimaryAccent")))
             }
             .background(Color("AppBackground").ignoresSafeArea())
             .navigationBarHidden(true)
         }
-        .onAppear(perform: checkNotificationStatus)
-        .onChange(of: isNotificationEnabled) { _, newValue in
-            handleNotificationToggle(isOn: newValue)
+        .onAppear {
+            isLightModeEnabled = appSettings.colorScheme == .light
+            syncNotificationStatus()
         }
-        .onChange(of: notificationTime) { _, _ in
-            // Reschedule notification if the time changes and notifications are enabled
-            if isNotificationEnabled {
-                scheduleNotification()
+        .onChange(of: isLightModeEnabled) { _, newValue in
+            withAnimation {
+                appSettings.colorScheme = newValue ? .light : .dark
             }
         }
     }
     
-    private func checkNotificationStatus() {
+    private func syncNotificationStatus() {
         NotificationManager.shared.getNotificationAuthorizationStatus { status in
             DispatchQueue.main.async {
-                isNotificationEnabled = (status == .authorized)
+                if status != .authorized {
+                    // If permissions are not granted, ensure our app's setting is off.
+                    isDailyNotificationEnabled = false
+                }
             }
         }
     }
@@ -71,11 +66,10 @@ struct SettingsView: View {
                 DispatchQueue.main.async {
                     if granted {
                         scheduleNotification()
-                        isNotificationEnabled = true
-                    } else {
-                        // User denied permission
-                        isNotificationEnabled = false
                     }
+                    // Keep the toggle state consistent with the user's action,
+                    // even if they denied the permission.
+                    isDailyNotificationEnabled = granted
                 }
             }
         } else {
@@ -88,6 +82,7 @@ struct SettingsView: View {
         NotificationManager.shared.scheduleDailyNotification(at: components)
     }
 }
+
 
 
 #Preview {

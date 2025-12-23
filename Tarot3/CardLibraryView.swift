@@ -18,7 +18,7 @@ struct CardLibraryView: View {
     var body: some View {
                 NavigationView {
                     VStack(spacing: 16) {
-                        CustomHeaderView(title: "牌卡圖書館")
+                        // CustomHeaderView(title: "牌卡圖鑑") // Removed CustomHeaderView
                         
                         // Custom Search Bar
                         HStack {
@@ -65,7 +65,10 @@ struct CardLibraryView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color("AppBackground").ignoresSafeArea())
-                    .navigationBarHidden(true)
+                    .navigationTitle("牌卡圖鑑") // Set navigation title here
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbarBackground(Color("AppBackground"), for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
                 }
     }
 }

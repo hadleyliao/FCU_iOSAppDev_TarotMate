@@ -12,16 +12,16 @@ struct ContentView: View {
                     Label("首頁", systemImage: "house")
                 }
 
-            CardLibraryView()
-                .tabItem {
-                    Label("牌卡", systemImage: "rectangle.stack")
-                }
-
             JournalView()
                 .tabItem {
                     Label("日誌", systemImage: "book")
                 }
-
+            
+            CardLibraryView()
+                .tabItem {
+                    Label("牌卡", systemImage: "rectangle.stack")
+                }
+            
             SettingsView()
                 .tabItem {
                     Label("設定", systemImage: "gear")

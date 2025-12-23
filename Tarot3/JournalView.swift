@@ -8,8 +8,6 @@ struct JournalView: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .center, spacing: 0) {
-                CustomHeaderView(title: "占卜日誌")
-
                 List {
                     ForEach(entries) { entry in
                         NavigationLink(destination: JournalDetailView(entry: entry)) {
@@ -25,7 +23,10 @@ struct JournalView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color("AppBackground").ignoresSafeArea())
-            .navigationBarHidden(true)
+            .navigationTitle("占卜日誌")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color("AppBackground"), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
         }
     }
     
