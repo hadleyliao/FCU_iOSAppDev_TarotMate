@@ -1,18 +1,6 @@
 # 🃏 塔羅牌抽卡記錄應用程式 (TarotMate)
 
 ## 📱 畫面截圖
-![APP畫面](screenshot/1.png)
-![過場畫面](screenshot/2.png)
-![主畫面](screenshot/3.png)
-![主畫面](screenshot/4.png)
-![主畫面](screenshot/5.png)
-![提醒設定](screenshot/6.png)
-![黑夜模式-主畫面](screenshot/7.png)
-![黑夜模式-主畫面](screenshot/8.png)
-![黑夜模式-主畫面](screenshot/9.png)
-![黑夜模式-主畫面](screenshot/10.png)
-![黑夜模式-主畫面](screenshot/11.png)
-![黑夜模式-提醒設定](screenshot/12.png)
 
 ---
 
@@ -263,39 +251,3 @@ Tarot3/
 - **UI 框架**：SwiftUI
 - **資料持久化**：SwiftData
 - **最低支援版本**：iOS 17.0+
-
----
-
-## 📦 安裝與執行
-
-1. Clone 此專案：
-```bash
-git clone https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate.git
-```
-
-2. 使用 Xcode 開啟專案：
-```bash
-cd FCU_iOSAppDev_TarotMate
-open Tarot3.xcodeproj
-```
-
-3. 選擇目標裝置或模擬器，點擊執行按鈕
-
----
-
-## 📝 授權
-
-此專案為逢甲大學 iOS App 開發課程作品。
-
----
-
-**專案作者**：廖卿秀  
-**創建日期**：2025/12/22  
-**平台**：iOS (SwiftUI + SwiftData)
-
----
-
-## 🔗 相關連結
-
-- [專案 Repository](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate)
-- [問題回報](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/issues)
