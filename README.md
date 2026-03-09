@@ -1,7 +1,18 @@
 # 🃏 塔羅牌抽卡記錄應用程式 (TarotMate)
 
 ## 📱 畫面截圖
-
+![APP畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/1.png)
+![過場畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/2.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/3.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/4.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/5.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/6.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/7.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/8.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/9.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/10.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/11.png)
+![主畫面](https://github.com/hadleyliao/FCU_iOSAppDev_TarotMate/blob/main/screenshot/12.png)
 ---
 
 ## 📋 專案概述
